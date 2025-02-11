@@ -4,9 +4,7 @@
   "version": "1.0",
   "description": "Assesses the carbon footprint of items in your shopping cart.",
   "permissions": ["activeTab", "storage", "scripting"],
-  "action": {
-    "default_popup": "popup.html",
-  },
+  "host_permissions": ["*://*/*"],
   "content_scripts": [
     {
       "matches": ["*://*/*"],
@@ -15,5 +13,8 @@
   ],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
   }
 }
