@@ -2,15 +2,23 @@ function getCartProducts() {
     const products = [];
 
     // Select all cart items
-    const productElements = document.querySelectorAll(".sc-list-item"); // Adjust selector if needed
+    const productElements = document.querySelectorAll(".sc-list-item"); // Adjust if needed
 
     console.log("🔍 Cart Items Found:", productElements.length);
 
     productElements.forEach(productElement => {
         try {
-            const name = productElement.querySelector(".sc-product-link")?.innerText.trim() || "Unknown Product";
-            const price = parseFloat(productElement.querySelector(".sc-product-price")?.innerText.replace("$", "") || 0);
-            const quantity = parseInt(productElement.querySelector(".sc-update-quantity-input")?.value || 1);
+            // Extract product name, ignoring aria-hidden elements
+            const nameElement = productElement.querySelector("a.sc-product-link:not([aria-hidden='true'])");
+            const name = nameElement ? nameElement.textContent.trim() : "Unknown Product";
+
+            // Extract price (check different possible classes)
+            const priceElement = productElement.querySelector(".sc-product-price, .a-price-whole");
+            const price = priceElement ? parseFloat(priceElement.textContent.replace("$", "").replace(",", "")) : 0;
+
+            // Extract quantity (if it's inside a dropdown or input field)
+            const quantityElement = productElement.querySelector("input.sc-update-quantity-input");
+            const quantity = quantityElement ? parseInt(quantityElement.value) : 1;
 
             console.log("📦 Extracted Product:", { name, price, quantity });
 
